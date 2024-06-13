@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micheal R</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Bebas Neue', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            overflow: auto;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://wallpapercave.com/wp/wp166803.jpg') no-repeat center center/cover;
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .connect-button {
+            margin-right: 25px;
+            padding: 10px 20px;
+            border: 2px solid white;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px; /* Ensure consistent height with icon buttons */
+        }
+
+        .icon-button {
+            margin-right: 15px;
+            padding: 10px;
+            border: 2px solid white;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+        }
+
+        .connect-button::before, .icon-button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 200%;
+            width: 200%;
+            background: white;
+            border-radius: 50%;
+            z-index: -1;
+            transition: transform 0.5s;
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        .connect-button:hover::before, .icon-button:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .connect-button:hover {
+            color: black;
+        }
+
+        .icon-button:hover {
+            color: black;
+        }
+
+        .intro {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .main-content {
+            padding: 20px;
+            width: 80%;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s, transform 1s;
+            margin-top: 30px; /* Reduced margin-top */
+        }
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card {
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: #ffff;
+        }
+
+        .card-part {
+            padding: 20px;
+        }
+
+        .card-part.blur {
+            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .card-part.black {
+            background: black;
+            color: white;
+        }
+
+        .image-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .image-grid img {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+        }
+
+        .subject-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .projects-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .small-card {
+            background: linear-gradient(45deg, #6dd5ed, #2193b0);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1 0 calc(33.33% - 10px);
+            position: relative;
+            overflow: hidden;
+            transition: background 1s ease, transform 1s ease;
+            color: white; /* Set text color to white */
+            text-decoration: none; /* Remove underline */
+        }
+
+        .small-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .small-card:hover {
+            background: linear-gradient(45deg, orange, purple);
+        }
+
+        .hover-content {
+            display: block;
+            position: absolute;
+            top: -50px; /* start above the card */
+            left: 50%;
+            transform: translate(-50%, 0);
+            text-align: center;
+            opacity: 0;
+            transition: top 1s ease, opacity 1s ease;
+        }
+
+        .small-card:hover .hover-content {
+            top: 50%;
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+
+        .small-card:hover *:not(.hover-content) {
+            display: none;
+        }
+
+        .personal-details {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .personal-details h2 {
+            margin-top: 0;
+        }
+
+        #heading {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #wavinghand {
+            width: 100px;
+            height: auto;
+            transform-origin: bottom center;
+            animation: wave 2s infinite ease-in-out;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0); }
+            25% { transform: rotate(20deg); }
+            50% { transform: rotate(-20deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        #heading-description {
+            margin-top: 10px;
+        }
+
+        #main-content {
+            margin-top: 30px; /* To avoid overlap with the fixed navbar */
+        }
+
+        @media (max-width: 600px) {
+            .connect-button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+
+            .icon-button {
+                width: 35px;
+                height: 35px;
+                margin-right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <nav class="navbar">
+        <a href="mailto:r.micheal.dev@gmail.com" class="connect-button">Let's connect</a>
+        <a href="https://github.com/micheal-r" class="icon-button"><img src="/assets/github.png" alt="GitHub" style="width: 20px; height: 20px;"></a>
+        <a href="https://discord.com/users/976538165273845830" class="icon-button"><img src="/assets/discord.png" alt="Discord" style="width: 20px; height: 20px;"></a>
+        <a href="mailto:r.micheal.dev@gmail.com" class="icon-button"><img src="/assets/email.png" alt="Email" style="width: 20px; height: 20px;"></a>
+    </nav>
+    <div class="intro" id="intro">
+        <div id="heading">
+            <h1 id="header">Hey! I am Micheal</h1>
+            <img src="/assets/waving-hand.png" alt="Wave" id="wavinghand">
+        </div>
+        <h3 id="heading-description">I am a full-stack developer and tech enthusiast.</h3>
+    </div>
+    <div class="main-content" id="main-content">
+        <div class="card">
+            <div class="card-part blur">
+                <div style="display: flex; align-items: center;">
+                    <p style="flex: 1;">I have experience with a lot of coding languages, for both backend and frontend. My favorite coding language is JavaScript, because I like to make custom npm packages. For the frontend I like EJS the most, due to its great JavaScript compatibility. TypeScript is what I use for bigger Discord bots and Visual Studio Code extensions. When creating windows applications I like to use C#. HTML and CSS is what I use for static websites. For dynamic sites I like to use PHP due to its database compatibility.</p>
+                    <div class="image-grid">
+                        <img src="/assets/csharp.png" alt="Image 1">
+                        <img src="/assets/php.jpeg" alt="Image 2">
+                        <img src="/assets/EJS.png" alt="Image 3">
+                        <img src="/assets/html.png" alt="Image 4">
+                        <img src="/assets/javascript.png" alt="Image 5">
+                        <img src="/assets/TypeScript.webp" alt="Image 6">
+                    </div>
+                </div>
+                </div>
+                <div class="card-part black">
+                    <h2 class="subject-title" style="font-size: 40px; text-align: center;">Projects</h2>
+                    <div class="projects-grid">
+                        <a href="https://github.com/hexalon-bot/" class="small-card">
+                            <img src="/assets/hexalon.png" alt="H">
+                            <h3>Hexalon</h3>
+                            <p>Hexalon is a multifunctional discord bot written in TypeScript.</p>
+                            <div class="hover-content">Hexalon is made by me and khray.</div>
+                        </a>
+                        <a href="https://github.com/micheal-r/TocoBot" class="small-card">
+                            <img src="/assets/tocobot.png" alt="T">
+                            <h3>TocoBot</h3>
+                            <p>TocoBot is a discord music bot made with lavalink and lavamusic drivers.</p>
+                            <div class="hover-content">TocoBot is made by me using lavamusic.</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-part blur">
+                    <div class="personal-details">
+                        <h2>Personal Details</h2>
+                        <p>Name: Micheal R</p>
+                        <p>Email: r.micheal.dev@gmail.com</p>
+                        <p>Discord: micheal.r</p>
+                        <p>Location: Netherlands</p>
+                    </div>
+                </div>
+                </div>
+                </div>
+                <script>
+                    window.addEventListener('scroll', function() {
+                        var intro = document.getElementById('intro');
+                        var mainContent = document.getElementById('main-content');
+                        if (window.scrollY > 0) {
+                            intro.style.opacity = '0';
+                            intro.style.transform = 'translateY(-50px)';
+                            mainContent.classList.add('visible');
+                        } else {
+                            intro.style.opacity = '1';
+                            intro.style.transform = 'translateY(0)';
+                            mainContent.classList.remove('visible');
+                        }
+                    });
+                </script>
+                </body>
+                </html>
+                
